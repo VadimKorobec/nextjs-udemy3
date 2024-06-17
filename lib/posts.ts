@@ -1,6 +1,6 @@
 import sql from "better-sqlite3";
 
-interface Post {
+export interface Post {
   imageUrl: string;
   title: string;
   content: string;
@@ -82,7 +82,7 @@ export async function storePost(post: Post) {
   return stmt.run(post.imageUrl, post.title, post.content, post.userId);
 }
 
-export async function updatePostLikeStatus(postId, userId) {
+export async function updatePostLikeStatus(postId: number, userId: number) {
   const stmt = db.prepare(`
     SELECT COUNT(*) AS count
     FROM likes
