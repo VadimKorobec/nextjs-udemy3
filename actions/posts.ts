@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import { storePost, updatePostLikeStatus } from "@/lib/posts";
 import { uploadImage } from "@/lib/cloudinary";
+import { revalidatePath } from "next/cache";
 
 export const createPost = async (prevState, formData: FormData) => {
   const title = formData.get("title") as string;
@@ -44,10 +45,11 @@ export const createPost = async (prevState, formData: FormData) => {
     content: content,
     userId: 1,
   });
-
+  revalidatePath("/", "layout");
   redirect("/feed");
 };
 
-export async function togglePostLikeStatus(postId: number) {
-  updatePostLikeStatus(postId, 2);
+export async function togglePostLikeStatus(postId) {
+  await updatePostLikeStatus(postId, 2);
+  revalidatePath("/", "layout");
 }
